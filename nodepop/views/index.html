@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <h1><p>Bienvenidos a  <%= title %></p></h1>
+
+    <h1 style="color: green;">  LISTADO DE ANUNCIOS DE COMPRA-VENTA</h1><br>
+
+    <% for(let productos of resultSet){%>
+
+    <p> <img src="/nodepop/public/images/<%=productos.imagen%>" alt=""> </p>
+
+    <p><b>Producto: </b> <%= productos.name %></p> <b>Precio:</b> <%= productos.precio %> €
+
+    <p></p> <b>Etiquetas</b> <%= productos.tags %> </p>
+
+    <p></p> <b>En venta</b> <%= productos.venta %> </p>
+
+    <%}%>
+    
+  </body>
+</html>
