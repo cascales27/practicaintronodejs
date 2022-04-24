@@ -4,11 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { isAPIRequest } = require('./lib/utils');
-
+const i18n = require('./lib/i18nConfigure');
 
 var app = express();
 
 require('./lib/connectMongoose.js');
+
+app.use(i18n.init)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
