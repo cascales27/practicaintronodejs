@@ -17,6 +17,12 @@ npm install
 ```
 En producción:
 
+Cpoia .env.example en .env y establecer valores de configuracion
+
+```sh
+cp .env.example .env
+```
+
 ```sh
 npm start
 ```

@@ -7,10 +7,14 @@ const productoData = require('./productosiniciales.json');
 // cargar modelos
 const Producto = require('./models/Producto');
 
+const Usuario = require('./models/Usuario');
+
 async function main() {
 
 // inicializar productos
     await initProductos();
+
+    await initUsuarios();
 
     // desconectar la BD
     dbConection.close();
@@ -18,6 +22,23 @@ async function main() {
 
 main().catch(err => console.log('Hubo un error', err));
 
+
+async function initUsuarios () {
+    const deleted = await Usuario.deleteMany();
+    console.log(`Eliminados ${deleted.deletedCount} usuarios`);
+
+    const usuarios = await Usuario.insertMany([
+        {
+            email: 'admin@example.com',
+            password: '1234'
+        },
+        {
+            email: 'user1@example.com',
+            password: '1234'
+        },
+    ]);
+    console.log(`Creados ${usuarios.lenght} usuarios.`);
+}
 async function initProductos () {
     // borrar todos los datos de la BD
     const deleted = await Producto.deleteMany();

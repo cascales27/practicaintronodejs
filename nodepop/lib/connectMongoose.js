@@ -10,8 +10,8 @@ mongoose.connection.on('error', err => {
 mongoose.connection.once('open', err => {
     console.log('Conectado a MongoDB en la BD:', mongoose.connection.name);
 });
-
-mongoose.connect('mongodb://localhost/productosapi');
+console.log(process.env.MONGODB_CONNECTION_STRING)
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
 
 
 module.exports = mongoose.connection;

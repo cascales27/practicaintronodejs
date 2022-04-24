@@ -10,7 +10,7 @@ var app = express();
 
 require('./lib/connectMongoose.js');
 
-app.use(i18n.init)
+app.use(i18n.init);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,6 +40,10 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 app.use('/', require('./routes/api/productos'));
 app.use('/api/productos', require('./routes/api/productos'));
+app.use('/features', require('./routes/api/features'));
+app.use('/change-locale', require('./routes/change-locale'));
+
+
 
 /**
  * Rutas de mi website 
