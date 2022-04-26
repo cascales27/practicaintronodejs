@@ -3,9 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session');
 const { isAPIRequest } = require('./lib/utils');
 const i18n = require('./lib/i18nConfigure');
-
+const LoginController = require('./controllers/LoginController');
+const LogoutController = require('./controllers/LogoutController');
+const PrivadoController = require('./controllers/PrivadoController');
+const sessionAuth = require('./lib/sessionAuth');
 var app = express();
 
 require('./lib/connectMongoose.js');
@@ -43,14 +47,25 @@ app.use('/api/productos', require('./routes/api/productos'));
 app.use('/features', require('./routes/api/features'));
 app.use('/change-locale', require('./routes/change-locale'));
 
-
+const loginController = new LoginController();
+const privadoController = new PrivadoController();
+app.use(session({
+  name: 'nodepop-session',
+  secret: 'nodepop-secret',
+  saveUninitialized: true,
+  resave: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 2,}
+}));
 
 /**
  * Rutas de mi website 
  */
-app.use('/',       require('./routes/index'));
-app.use('/users',  require('./routes/users'));
-
+app.use('/',            require('./routes/index'));
+app.use('/users',       require('./routes/users'));
+app.get('/login',           loginController.index);
+app.post('/login',           loginController.post);
+app.get('/privado',   sessionAuth('admin'),    privadoController.index);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

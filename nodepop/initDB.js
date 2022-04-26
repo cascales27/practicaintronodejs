@@ -1,5 +1,6 @@
 'use strict';
 
+const   loadEnv =  require('./Lib/loadEnv.js'); 
 // conexion a la base de datos
 const dbConection = require('./lib/connectMongoose');
 const productoData = require('./productosiniciales.json');
@@ -30,11 +31,13 @@ async function initUsuarios () {
     const usuarios = await Usuario.insertMany([
         {
             email: 'admin@example.com',
-            password: '1234'
+            password: await Usuario.hashPassword('1234'),
+            rol: 'admin'
         },
         {
             email: 'user1@example.com',
-            password: '1234'
+            password:await Usuario.hashPassword('1234'), 
+            rol: 'user'
         },
     ]);
     console.log(`Creados ${usuarios.lenght} usuarios.`);
