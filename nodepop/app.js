@@ -10,6 +10,7 @@ const LoginController = require('./controllers/LoginController');
 const LogoutController = require('./controllers/LogoutController');
 const PrivadoController = require('./controllers/PrivadoController');
 const sessionAuth = require('./lib/sessionAuth');
+const MongoStore = require('connect-mongo')(session);
 var app = express();
 
 require('./lib/connectMongoose.js');
@@ -55,8 +56,16 @@ app.use(session({
   saveUninitialized: true,
   resave: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 2,}
+    maxAge: 1000 * 60 * 60 * 24 * 2},
+  store: MongoStore.create({
+    mongoUrl:process.env.MONGODB_CONNECTION_STRING,
+})
 }));
+
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+  });
 
 /**
  * Rutas de mi website 
@@ -65,6 +74,7 @@ app.use('/',            require('./routes/index'));
 app.use('/users',       require('./routes/users'));
 app.get('/login',           loginController.index);
 app.post('/login',           loginController.post);
+app.get('/logout',           LoginController.logout);
 app.get('/privado',   sessionAuth('admin'),    privadoController.index);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

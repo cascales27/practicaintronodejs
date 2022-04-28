@@ -34,11 +34,20 @@
                         <li class="nav-item"><a class="nav-link me-lg-3" href="/features">Features</a></li>
                         <li class="nav-item"><a class="nav-link me-lg-3" href="#download">Download</a></li>
                     </ul>
-                    <a href="login" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" >
+
+                    <% if (session.usuarioLogado) { %>
+                    <a href="logout" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" >
                         <span class="d-flex align-items-center">
-                            <span class="small"><%= __('Login') %></span>
+                            <span class="small"><%= __('Logout') %></span>
                         </span>
                       </a>
+                      <% } else { %>
+                        <a href="login" class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" >
+                          <span class="d-flex align-items-center">
+                              <span class="small"><%= __('Login') %></span>
+                          </span>
+                        </a>
+                      <% } %>
                 </div>
             </div>
         </nav>
