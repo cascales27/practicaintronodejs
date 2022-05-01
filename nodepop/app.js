@@ -11,7 +11,12 @@ const LogoutController = require('./controllers/LogoutController');
 const PrivadoController = require('./controllers/PrivadoController');
 const sessionAuth = require('./lib/sessionAuth');
 const MongoStore = require('connect-mongo')(session);
+const jwtAuth = require('./lib/jwtAuth');
+
 var app = express();
+
+const loginController = new LoginController();
+const privadoController = new PrivadoController();
 
 require('./lib/connectMongoose.js');
 
@@ -43,13 +48,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**
  * rutas de mi api
  */
+
+app.post('/api/login', LoginController.postJWT);
 app.use('/', require('./routes/api/productos'));
-app.use('/api/productos', require('./routes/api/productos'));
+app.use('/api/productos',jwtAuth, require('./routes/api/productos'));
 app.use('/features', require('./routes/api/features'));
 app.use('/change-locale', require('./routes/change-locale'));
 
-const loginController = new LoginController();
-const privadoController = new PrivadoController();
+
 app.use(session({
   name: 'nodepop-session',
   secret: 'nodepop-secret',
